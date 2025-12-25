@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEON - The Future Economy</title>
+    <style>
+        :root {
+            --bg-color: #0d0d10;
+            --primary: #fecb00; /* TEON Gold */
+            --accent: #ff8f00;
+            --text: #ffffff;
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            margin: 0; font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        /* --- Animations --- */
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        @keyframes glow { 0%, 100% { box-shadow: 0 0 20px rgba(254, 203, 0, 0.3); } 50% { box-shadow: 0 0 40px rgba(254, 203, 0, 0.6); } }
+        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+
+        /* --- Navbar --- */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 40px; background: rgba(13, 13, 16, 0.9);
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            backdrop-filter: blur(10px); box-sizing: border-box; border-bottom: 1px solid var(--border);
+        }
+        .logo { font-size: 1.5rem; font-weight: 900; color: var(--primary); letter-spacing: 2px; }
+        .nav-links a { color: #fff; text-decoration: none; margin-left: 20px; font-size: 0.9rem; transition: 0.3s; }
+        .nav-links a:hover { color: var(--primary); }
+
+        /* --- Hero Section --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: radial-gradient(circle at 50% 50%, #1a1a20 0%, #000 100%);
+            padding: 20px; position: relative; overflow: hidden;
+        }
+
+        /* Background Effects */
+        .orb {
+            position: absolute; width: 300px; height: 300px;
+            background: var(--primary); filter: blur(150px); opacity: 0.2;
+            border-radius: 50%; z-index: 0;
+        }
+
+        .hero-content { z-index: 1; max-width: 800px; }
+        
+        .coin-img {
+            width: 180px; height: 180px;
+            background: radial-gradient(circle at 30% 30%, #ffd700, #ff8f00);
+            border-radius: 50%;
+            border: 6px solid #cc8800;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 90px; font-weight: 900; color: rgba(100,60,0,0.6);
+            margin: 0 auto 30px;
+            animation: float 4s ease-in-out infinite, glow 3s infinite;
+        }
+
+        h1 { font-size: 4rem; margin: 0; line-height: 1.1; text-transform: uppercase; }
+        h1 span { color: var(--primary); }
+        .subtitle { font-size: 1.2rem; color: #aaa; margin-top: 15px; margin-bottom: 40px; }
+
+        .cta-btn {
+            background: linear-gradient(90deg, #ffd700, #ff8f00);
+            color: #000; padding: 18px 50px; font-size: 1.2rem; font-weight: bold;
+            border: none; border-radius: 50px; text-decoration: none;
+            transition: 0.3s; display: inline-block;
+            box-shadow: 0 10px 30px rgba(255, 143, 0, 0.3);
+        }
+        .cta-btn:hover { transform: scale(1.05); box-shadow: 0 10px 50px rgba(255, 143, 0, 0.5); }
+
+        /* --- Stats Ticker (HK Style) --- */
+        .ticker-wrap {
+            width: 100%; background: #111; padding: 10px 0;
+            border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+            overflow: hidden; white-space: nowrap;
+        }
+        .ticker { display: inline-block; animation: scroll 20s linear infinite; }
+        .ticker-item { display: inline-block; margin-right: 50px; color: #888; font-family: monospace; }
+        .ticker-item b { color: var(--primary); }
+
+        /* --- Roadmap (The Main Event) --- */
+        .section { padding: 100px 20px; max-width: 1000px; margin: 0 auto; }
+        .section-title { text-align: center; font-size: 2.5rem; margin-bottom: 60px; }
+        .section-title span { border-bottom: 3px solid var(--primary); }
+
+        .roadmap { position: relative; border-left: 2px solid var(--border); margin-left: 20px; }
+        .r-item { margin-bottom: 50px; padding-left: 30px; position: relative; }
+        .r-item::before {
+            content: ''; position: absolute; left: -9px; top: 5px;
+            width: 16px; height: 16px; background: var(--bg-color);
+            border: 2px solid var(--primary); border-radius: 50%;
+        }
+        .r-item.done::before { background: var(--primary); }
+        
+        .r-phase { font-size: 0.9rem; color: var(--primary); font-weight: bold; margin-bottom: 5px; }
+        .r-title { font-size: 1.5rem; font-weight: bold; margin-bottom: 10px; }
+        .r-desc { color: #888; line-height: 1.6; }
+
+        /* --- Airdrop / Tokenomics --- */
+        .token-box {
+            background: var(--glass); border: 1px solid var(--border);
+            padding: 40px; border-radius: 20px; text-align: center;
+            display: flex; flex-direction: column; align-items: center;
+        }
+        .token-stat { font-size: 3rem; font-weight: 900; color: var(--primary); }
+
+        /* --- Partners (Marquee) --- */
+        .partners { text-align: center; padding-bottom: 100px; }
+        .p-grid { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 30px; }
+        .p-logo {
+            background: var(--glass); padding: 15px 30px; border-radius: 10px;
+            font-weight: bold; color: #666; border: 1px solid var(--border);
+        }
+
+        /* --- Footer --- */
+        footer {
+            background: #050505; padding: 50px 20px; text-align: center;
+            border-top: 1px solid var(--border);
+        }
+        .socials { margin-bottom: 20px; }
+        .socials a {
+            display: inline-flex; width: 50px; height: 50px;
+            background: var(--glass); border-radius: 50%;
+            justify-content: center; align-items: center;
+            margin: 0 10px; color: #fff; text-decoration: none; font-size: 1.2rem;
+            transition: 0.3s; border: 1px solid var(--border);
+        }
+        .socials a:hover { background: var(--primary); color: #000; border-color: var(--primary); }
+
+        /* Mobile */
+        @media (max-width: 600px) {
+            h1 { font-size: 2.5rem; }
+            .nav-links { display: none; } /* Hide menu on mobile for simplicity */
+            .logo-coin { width: 140px; height: 140px; font-size: 70px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">TEON</div>
+        <div class="nav-links">
+            <a href="#roadmap">Roadmap</a>
+            <a href="#airdrop">Airdrop</a>
+            <a href="#community">Community</a>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <div class="orb" style="top: 20%; left: 20%;"></div>
+        <div class="orb" style="bottom: 20%; right: 20%; background: purple;"></div>
+
+        <div class="hero-content">
+            <div class="coin-img">T</div>
+            <h1>The Future <br><span>Economy</span></h1>
+            <p class="subtitle">Tap, Mine, and Build your Strategy. The biggest Airdrop on TON is loading...</p>
+            
+            <a href="https://t.me/TeonCoin_OfficialBot" class="cta-btn">🚀 Play Now</a>
+            <p style="margin-top: 15px; font-size: 0.8rem; color: #666;">* No download required</p>
+        </div>
+    </div>
+
+    <div class="ticker-wrap">
+        <div class="ticker">
+            <span class="ticker-item">TOTAL PLAYERS: <b>1,420,092</b></span>
+            <span class="ticker-item">ONLINE NOW: <b>85,231</b></span>
+            <span class="ticker-item">TOTAL MINED: <b>450M+ TEON</b></span>
+            <span class="ticker-item">AIRDROP STATUS: <b>PHASE 1 (LIVE)</b></span>
+            <span class="ticker-item">TOTAL PLAYERS: <b>1,420,092</b></span>
+            <span class="ticker-item">ONLINE NOW: <b>85,231</b></span>
+            <span class="ticker-item">TOTAL MINED: <b>450M+ TEON</b></span>
+        </div>
+    </div>
+
+    <div id="roadmap" class="section">
+        <div class="section-title"><span>Roadmap</span></div>
+        <div class="roadmap">
+            <div class="r-item done">
+                <div class="r-phase">PHASE 1 - Q1 2026 (COMPLETED)</div>
+                <div class="r-title">Project Launch</div>
+                <div class="r-desc">Launch of TEON Bot on Telegram, Basic Mining features, and Community building initiated.</div>
+            </div>
+            <div class="r-item done">
+                <div class="r-phase">PHASE 2 - Q1 2026 (LIVE NOW)</div>
+                <div class="r-title">Mining, Growth And Many More</div>
+                <div class="r-desc">Referral System implementation, PPH (Profit Per Hour) Cards launch, and partnership announcements.</div>
+            </div>
+            <div class="r-item">
+                <div class="r-phase">PHASE 3 - Q2 2026</div>
+                <div class="r-title">Utility & Listing</div>
+                <div class="r-desc">Wallet Connection feature, Pre-Market trading on partners, and first CEX Listing announcements.</div>
+            </div>
+            <div class="r-item">
+                <div class="r-phase">PHASE 4 - Q3 2026</div>
+                <div class="r-title">The Airdrop</div>
+                <div class="r-desc">TGE (Token Generation Event), Massive Airdrop for miners, and launch of TEON Blockchain Ecosystem.</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="airdrop" class="section">
+        <div class="token-box">
+            <h2 style="font-size: 2rem; margin-bottom: 10px;">Tokenomics & Airdrop</h2>
+            <p style="color: #aaa; margin-bottom: 30px;">Most of the tokens will be distributed to the community. Play more to earn more.</p>
+            
+            <div style="display: flex; gap: 40px; flex-wrap: wrap; justify-content: center;">
+                <div>
+                    <div class="token-stat">80%</div>
+                    <div style="color: #666; font-size: 0.9rem; letter-spacing: 1px;">COMMUNITY</div>
+                </div>
+                <div>
+                    <div class="token-stat">TON</div>
+                    <div style="color: #666; font-size: 0.9rem; letter-spacing: 1px;">NETWORK</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section partners">
+        <p style="color: #666; text-transform: uppercase; letter-spacing: 2px;">Listing Partners (Soon)</p>
+        <div class="p-grid">
+            <div class="p-logo">BINANCE</div>
+            <div class="p-logo">BYBIT</div>
+            <div class="p-logo">OKX</div>
+            <div class="p-logo">KUCOIN</div>
+            <div class="p-logo">GATE.IO</div>
+        </div>
+    </div>
+
+    <footer id="community">
+        <div class="socials">
+            <a href="https://t.me/teontfeofficial">✈️</a>
+            <a href="https://x.com/teon__official">✖️</a>
+            <a href="https://www.youtube.com/@TEONTheFutureEconomy">▶️</a>
+            <a href="https://www.instagram.com/teon_tfe_official">📷</a>
+        </div>
+        <h3>Join the TEON Army</h3>
+        <p style="color: #444; margin-top: 20px;">© 2025 TEON Project. Built on TON.</p>
+    </footer>
+
+</body>
+</html>
